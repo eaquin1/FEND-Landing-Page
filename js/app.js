@@ -19,7 +19,8 @@ console.log("landed?");
 */
 const listOfSections = document.querySelectorAll("section[data-nav]");
 const navBar = document.getElementById("navbar__list");
-const navItems = null;
+//const navItems = null;
+const headers = document.querySelectorAll('h2');
 
 
 
@@ -38,6 +39,38 @@ const buildMenu = (sections) => {
   }
   navBar.appendChild(fragment);
 };
+
+//Check if element is in the viewport
+const isInViewport = (el) => {
+  const rect = el.getBoundingClientRect();
+ // DOMRect { x: 8, y: 8, width: 100, height: 100, top: 8, right: 108, bottom: 108, left: 8 }
+ const windowHeight = (window.innerHeight || document.documentElement.clientHeight);
+ const windowWidth = (window.innerWidth || document.documentElement.clientWidth);
+
+ // http://stackoverflow.com/questions/325933/determine-whether-two-date-ranges-overlap
+ const vertInView = (rect.top <= windowHeight) && ((rect.top + rect.height) >= 0);
+ const horInView = (rect.left <= windowWidth) && ((rect.left + rect.width) >= 0);
+
+ return (vertInView && horInView);
+};
+
+//toggling "your-active-state" if the header is in the is in the viewport
+const toggling = () => {
+  for (header of listOfSections) {
+  if (isInViewport(header)) {
+  header.classList.add("your-active-class");
+} else {
+  header.classList.remove("your-active-class")
+  }
+}
+}
+
+
+//toggle active state for reaching each header's top coordinate
+//const toggle = () => {
+//  const coordHeaders = getOffset(headers)
+//}
+//var x = getOffset( document.getElementById('yourElId') ).left; 
 //Write function for what Event Listener will do
 
 
@@ -53,7 +86,8 @@ buildMenu(listOfSections);
 
 // Add class 'active' to section when near top of viewport
 
-
+//place an event listener on each header's coordinate
+window.addEventListener('scroll', toggling, false);
 // Scroll to anchor ID using scrollTO event
 
 
